@@ -16,7 +16,9 @@ function Chat() {
     const scrollRef = useRef()
 
     useEffect(() => {
-        scrollRef.current.scrollIntoView({ behaviour: 'smooth' })
+        if (data && !isLoading) {
+            scrollRef.current.scrollIntoView({ behaviour: 'smooth' })
+        }
     })
 
 
