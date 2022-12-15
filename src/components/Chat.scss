@@ -1,0 +1,24 @@
+.chat-ctn {
+    height: 80vh;
+    width: 80vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.messages-ctn {
+    overflow-y: scroll;
+    border: 1px solid rgb(80, 80, 80);
+    height: 100%;
+    width: 100%;
+}
+
+.chat-input {
+    width: 100%;
+
+    input {
+        width: 90%;
+    }
+}
