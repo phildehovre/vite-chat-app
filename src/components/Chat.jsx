@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { auth } from '../config/firebase'
 import { addMessage, useMessagesByOwner } from '../utils/db'
@@ -13,8 +13,12 @@ function Chat() {
     const { register, handleSubmit, reset, formState, submittedData } = useForm()
 
     const { data, isLoading, Error } = useMessagesByOwner()
+    const scrollRef = useRef()
 
-    console.log(data ? data : '')
+    useEffect(() => {
+        scrollRef.current.scrollIntoView({ behaviour: 'smooth' })
+    })
+
 
     const onSubmit = (d) => {
         const { uid, photoURL } = user
@@ -32,9 +36,13 @@ function Chat() {
         if (data && !isLoading) {
             return data.map((msg, i) => {
                 return (
-                    <ChatMessage key={msg.id} msg={msg} />
+                    <>
+                        <ChatMessage key={msg.id} msg={msg} />
+                        {data.length - 1 === i &&
+                            <div ref={scrollRef}></div>
+                        }
+                    </>
                 )
-
             }
             )
         }
@@ -50,6 +58,7 @@ function Chat() {
                 <input {...register("chatInput")} type='text' />
                 <button
                 >Send</button>
+                <div></div>
             </form>
         </div>
     )
