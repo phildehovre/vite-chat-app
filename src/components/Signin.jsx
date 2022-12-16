@@ -35,8 +35,10 @@ function Signin(props) {
 
     const onSubmit = (data) => {
         if (type === 'signup') {
-            createUserWithEmailAndPassword(data.email, data.password);
-            createUser(uuidv4(), data)
+            createUserWithEmailAndPassword(data.email, data.password)
+                .then(({ user }) => {
+                    createUser(user.uid, data)
+                }).catch((err) => { console.log(err) })
             if (user && !loading) navigate('/')
         }
         console.log('submitting', type)
