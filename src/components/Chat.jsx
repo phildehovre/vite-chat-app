@@ -53,15 +53,17 @@ function Chat() {
     return (
         <div className='chat-ctn'>
             {data
-                ? <div className='messages-ctn'>{renderChatbox()}</div>
+                ? <div className='messages-ctn'>
+                    {renderChatbox()}
+                    <form className='chat-input' onSubmit={handleSubmit(onSubmit)}>
+                        <input {...register("chatInput")} type='text' />
+                        <button
+                        >Send</button>
+                        <div></div>
+                    </form>
+                </div>
                 : <h1>Loading...</h1>
             }
-            <form className='chat-input' onSubmit={handleSubmit(onSubmit)}>
-                <input {...register("chatInput")} type='text' />
-                <button
-                >Send</button>
-                <div></div>
-            </form>
         </div>
     )
 }

@@ -1,5 +1,19 @@
 .signin-ctn {
     display: flex;
     flex-direction: column;
+    padding: 0 7.5em 5em 7.5em;
+    border: 1px solid grey;
+    border-radius: 16px;
+    min-width: fit-content;
+    min-height: fit-content;
+    justify-content: center;
 
+    input {
+        padding: .5em;
+
+    }
+
+    label {
+        margin-top: 2em;
+    }
 }

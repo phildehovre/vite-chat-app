@@ -18,12 +18,18 @@ function NavBar() {
 
     return (
         <div className='navbar-ctn'>
-            <Link to='/'>Home</Link>
-            <Link to='/signup'>Sign up</Link>
-            {user &&
-                <p>Welcome, {user.auth.currentUser.email}</p>
-            }
-            <button onClick={signOutWithGoogle}>Sign out</button>
+            <h1 className='logo-ctn'>ChatApp</h1>
+            <div className='links-ctn'>
+                <Link className='link-btn' to='/'>Home</Link>
+
+                {user
+                    ? <>
+                        <p>Welcome, {user.auth.currentUser.email}</p>
+                        <button onClick={signOutWithGoogle}>Sign out</button>
+                    </>
+                    : <Link className='link-btn' to='/signup'>Sign up</Link>
+                }
+            </div>
         </div>
     )
 }

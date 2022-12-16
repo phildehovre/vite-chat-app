@@ -1,6 +1,7 @@
 import React from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import Chat from '../components/Chat'
+import Signin from '../components/Signin'
 import { auth } from '../config/firebase'
 
 
@@ -15,7 +16,7 @@ function HomePage() {
         <div>
             {user
                 ? <Chat />
-                : <h1>Loading...</h1>
+                : <Signin />
             }
         </div>
     )

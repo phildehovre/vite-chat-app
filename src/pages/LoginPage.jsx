@@ -1,8 +1,9 @@
 import React from 'react'
+import Signin from '../components/Signin'
 
 function LoginPage() {
     return (
-        <div>LoginPage</div>
+        <Signin type='login' />
     )
 }
 

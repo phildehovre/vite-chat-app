@@ -8,3 +8,15 @@
     justify-content: space-around;
     align-items: center;
 }
+
+.links-ctn {
+    justify-content: space-evenly;
+    align-items: center;
+    width: 40%;
+    display: flex;
+}
+
+.link-btn {
+    text-decoration: none;
+    color: white;
+}
