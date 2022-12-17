@@ -1,9 +1,9 @@
 import React from 'react'
-import Signin from '../components/Signin'
+import Login from '../components/Login'
 
 function LoginPage() {
     return (
-        <Signin type='login' />
+        <Login />
     )
 }
 

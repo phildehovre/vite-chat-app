@@ -6,7 +6,9 @@ function ChatMessage(props) {
 
     const [user] = useAuthState(auth)
 
+
     const { value, owner, photoURL } = props.msg
+
 
     const isOwner = user.uid === owner ? 'owner' : ''
 

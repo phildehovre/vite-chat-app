@@ -2,14 +2,14 @@ import React, { useEffect } from 'react'
 import './Signin.scss'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { signInWithPopup } from 'firebase/auth'
+import { getAuth, signInWithPopup } from 'firebase/auth'
 import { auth, provider } from '../config/firebase'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
-import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth'
+import { useCreateUserWithEmailAndPassword, useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth'
 import { createUser } from '../utils/db'
 import { useNavigate } from 'react-router-dom'
-import { uuidv4 } from '@firebase/util'
+import Spinner from './Spinner'
 
 const schema = yup.object().shape({
     firstname: yup.string().required('Your first name is required'),
@@ -25,27 +25,46 @@ function Signin(props) {
     const { type } = props
 
     const navigate = useNavigate()
+    const Auth = getAuth()
 
     const signInWithGoogle = () => {
         signInWithPopup(auth, provider);
     }
 
-    const { handleSubmit, register } = useForm({ resolver: yupResolver(schema) })
+    const { handleSubmit, register, formState: { errors } } = useForm({ resolver: yupResolver(schema) })
     const [createUserWithEmailAndPassword, user, loading, error] = useCreateUserWithEmailAndPassword(auth)
+    const [signInWithEmailAndPassword, signedInUser, signInIsLoading, signedInError] = useSignInWithEmailAndPassword(auth)
+
+    console.log(errors)
 
     const onSubmit = (data) => {
         if (type === 'signup') {
             createUserWithEmailAndPassword(data.email, data.password)
-                .then(({ user }) => {
-                    createUser(user.uid, data)
+                .then((userCredentials) => {
+                    createUser(userCredentials.user.uid, data).then(() => {
+                        navigate('/')
+                    })
                 }).catch((err) => { console.log(err) })
             if (user && !loading) navigate('/')
         }
-        console.log('submitting', type)
-        if (type === 'login') {
-            alert('Need to implement login functionality')
-        }
     }
+    const handleLogin = (e) => {
+        e.preventDefault()
+        const email = e.target[0].value
+        const password = e.target[1].value
+        console.log(email, password)
+        signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                // const user = userCredential.user;
+                // navigate('/')
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorMessage)
+            });
+    }
+
 
     return (
         <div>
@@ -62,19 +81,19 @@ function Signin(props) {
                         <input type='password' name='password' {...register('password')} />
                         <label>Confirm your password</label>
                         <input type='password' name='passwordConfirm' {...register('passwordConfirm')} />
-                        <button type='submit'>Sign in</button>
+                        <button type='submit'>{loading ? <Spinner /> : 'Sign in'}</button>
                     </form>
                     {error && <p style={{ color: 'salmon' }}>{error.message}</p>}
                     <p>Already a member? <Link to='/login'>Login!</Link></p>
                 </>
             }
             {type === 'login' &&
-                < form className='signin-ctn' onSubmit={handleSubmit(onSubmit)}>
+                < form className='signin-ctn' onSubmit={handleLogin}>
                     <label>E-mail</label>
                     <input type='text' name='email' {...register('email')} />
                     <label>Password</label>
                     <input type='password' name='password' {...register('password')} />
-                    <button type='submit'>Log in</button>
+                    <button type='submit'>{signInIsLoading ? <Spinner /> : 'Sign in'}</button>
                     {error && <p style={{ ciolor: 'salmon' }}>{error.message}</p>}
                 </form>
             }

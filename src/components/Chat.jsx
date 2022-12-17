@@ -16,7 +16,7 @@ function Chat() {
     const scrollRef = useRef()
 
     useEffect(() => {
-        if (data && !isLoading) {
+        if (data && data.length > 0 && !isLoading) {
             scrollRef.current.scrollIntoView({ behaviour: 'smooth' })
         }
     })
@@ -35,7 +35,7 @@ function Chat() {
 
 
     const renderChatbox = () => {
-        if (data && !isLoading) {
+        if (data && data.length !== 0 && !isLoading) {
             return data.map((msg, i) => {
                 return (
                     <>
@@ -48,20 +48,25 @@ function Chat() {
             }
             )
         }
+        return (
+            <p>Start the conversation!</p>
+        )
     }
 
     return (
         <div className='chat-ctn'>
             {data
-                ? <div className='messages-ctn'>
-                    {renderChatbox()}
+                ? <>
+                    <div className='messages-ctn'>
+                        {renderChatbox()}
+                    </div>
                     <form className='chat-input' onSubmit={handleSubmit(onSubmit)}>
                         <input {...register("chatInput")} type='text' />
                         <button
                         >Send</button>
                         <div></div>
                     </form>
-                </div>
+                </>
                 : <h1>Loading...</h1>
             }
         </div>
