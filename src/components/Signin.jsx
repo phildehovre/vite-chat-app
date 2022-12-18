@@ -35,7 +35,6 @@ function Signin(props) {
     const [createUserWithEmailAndPassword, user, loading, error] = useCreateUserWithEmailAndPassword(auth)
     const [signInWithEmailAndPassword, signedInUser, signInIsLoading, signedInError] = useSignInWithEmailAndPassword(auth)
 
-    console.log(errors)
 
     const onSubmit = (data) => {
         if (type === 'signup') {

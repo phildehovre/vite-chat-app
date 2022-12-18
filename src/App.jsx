@@ -6,23 +6,31 @@ import HomePage from './pages/HomePage'
 import SignUpPage from './pages/SignUpPage'
 import LoginPage from './pages/LoginPage'
 import NavBar from './components/NavBar'
+import Modal from './components/Modal'
+import CreateRoomModalProvider from './contexts/CreateRoomModal'
+import ModalWrapper from './pages/ModalWrapper'
 
 function App() {
   const [count, setCount] = useState(0)
 
 
 
+
   return (
     <div className="App">
       <QueryClientProvider>
-        <Router >
-          <NavBar />
-          <Routes>
-            <Route path='/' element={<HomePage />} />
-            <Route path='/signup' element={<SignUpPage />} />
-            <Route path='/login' element={<LoginPage />} />
-          </Routes>
-        </Router>
+        <CreateRoomModalProvider>
+          <ModalWrapper />
+          <Router >
+            <NavBar />
+            <Routes>
+              <Route path='/' element={<HomePage />} />
+              <Route path='/room/:roomid' element={<HomePage />} />
+              <Route path='/signup' element={<SignUpPage />} />
+              <Route path='/login' element={<LoginPage />} />
+            </Routes>
+          </Router>
+        </CreateRoomModalProvider>
       </QueryClientProvider>
     </div>
   )

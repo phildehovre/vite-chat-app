@@ -18,6 +18,7 @@ function HomePage() {
                 ? <Chat />
                 : <Signin />
             }
+
         </div>
     )
 }

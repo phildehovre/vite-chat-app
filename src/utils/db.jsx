@@ -196,12 +196,58 @@ export function useMessagesByOwner(owner) {
     );
 };
 
-export const deleteItem = async (ticker, uid) => {
-    const docRef = doc(db, "watchlists", uid)
+export const deleteRoom = async (roomId, uid) => {
+    const docRef = doc(db, "rooms", roomId)
     const docSnap = await getDoc(docRef)
-    if (!ticker) return;
 
     if (docSnap.exists()) {
-        updateDoc(docRef, { watchlist: arrayRemove(ticker) })
+        deleteDoc(docRef)
     }
 }
+
+export const updateRoom = async (roomId, uid) => {
+    const docRef = doc(db, "rooms", roomId)
+    const docSnap = await getDoc(docRef)
+
+    if (docSnap.exists()) {
+        updateDoc(docRef, data)
+    } else {
+        setDoc(docRef, data)
+    };
+};
+export const addRoom = async (data, uid) => {
+    const collectionRef = collection(db, "rooms")
+    const { roomName, roomDescription } = data
+    addDoc(collectionRef, {
+        roomName, roomDescription,
+        admin: uid,
+        createdAt: serverTimestamp()
+    })
+};
+
+export function useAddRoom(data, uid) {
+    return useQuery(
+        ['rooms', { data, uid }],
+        createQuery(() =>
+            query(
+                collection(db, "rooms"), orderBy('createdAt'),
+            )
+        ),
+        {
+            // enabled: !!owner,
+        }
+    );
+};
+
+export const getRooms = async (uid) => {
+    const docRef = collection(db, "rooms");
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+        return docSnap.data()
+    }
+
+    if (!docSnap.exists()) {
+        console.log("No such document!");
+    };
+};

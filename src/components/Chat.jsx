@@ -6,6 +6,7 @@ import './Chat.scss'
 import { useForm } from 'react-hook-form'
 import ChatMessage from './ChatMessage'
 import './ChatMessage.scss'
+import { useIsMutating } from 'react-query'
 
 function Chat() {
 
@@ -39,7 +40,7 @@ function Chat() {
             return data.map((msg, i) => {
                 return (
                     <>
-                        <ChatMessage key={msg.id} msg={msg} />
+                        <ChatMessage key={i} msg={msg} />
                         {data.length - 1 === i &&
                             <div ref={scrollRef}></div>
                         }

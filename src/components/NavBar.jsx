@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import './NavBar.scss'
 import { auth } from '../config/firebase'
 import { useAuthState, useSignOut } from 'react-firebase-hooks/auth'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
 
 function NavBar() {
 
@@ -27,7 +29,14 @@ function NavBar() {
                         <p>Welcome, {user.auth.currentUser.email}</p>
                         <button onClick={signOutWithGoogle}>Sign out</button>
                     </>
-                    : <Link className='link-btn' to='/signup'>Sign up</Link>
+                    : <>
+                        <Link className='link-btn' to='/signup'>Sign up</Link>
+                    </>
+                }
+                {user &&
+                    <button className='link-btn' to='/'>Create Room!
+                        <FontAwesomeIcon icon={faPlus} color='grey' size='2x' />
+                    </button>
                 }
             </div>
         </div>
