@@ -5,6 +5,11 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    .roomName {
+        text-align: start;
+        width: 100%;
+    }
 }
 
 

@@ -40,7 +40,6 @@ function CreateRoomModal(props) {
 
     }
 
-    console.log(submitting)
 
     return (
         <Modal showModal={showModal}>
@@ -51,7 +50,7 @@ function CreateRoomModal(props) {
                     {errors.roomName && <p className='form-error'>{errors.roomName.message}</p>}
                     <input type='text' name='roomDescription' {...register('roomDescription')} />
                     {errors.description && <p className='form-error'>{errors.description.message}</p>}
-                    <button type='submit'>{submitting ? <Spinner /> : 'Create room'}</button>
+                    <button type='submit'>{addRoom.isLoading ? <Spinner /> : 'Create room'}</button>
                     {/* <button type='submit'>{'Create room'}</button> */}
                 </form>
                 <FontAwesomeIcon className='close-btn' icon={faClose} onClick={() => setShowModal(false)} />

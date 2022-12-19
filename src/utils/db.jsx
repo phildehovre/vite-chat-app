@@ -25,26 +25,6 @@ import { ReactQueryDevtools } from 'react-query/devtools'
 
 const client = new QueryClient();
 
-export const getUser = async (uid) => {
-    const docRef = doc(db, "users", uid);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-        return docSnap.data().portfolio
-    }
-
-    if (!docSnap.exists()) {
-        console.log("No such document!");
-    };
-};
-
-export const useUser = (uid, onSuccess, onError) => {
-    return useQuery(['users', { uid }], () => getUser(uid), {
-        onSuccess,
-        onError,
-        enabled: !!uid
-    })
-};
 
 export const fetchWatchlist = async (uid) => {
     const res = await getDoc(doc(db, 'users', uid), {
@@ -61,7 +41,6 @@ export function createUser(uid, data) {
 export function updateUser(uid, data) {
     return updateDoc(doc(db, "users", uid), data);
 };
-
 
 
 
@@ -172,12 +151,13 @@ export const updateWatchlist = async (uid, ticker) => {
         setDoc(docRef, { 'watchlist': ticker })
     };
 };
-export const addMessage = async (value, uid, photoURL) => {
+export const addMessage = async (value, roomId, uid, photoURL) => {
     const collectionRef = collection(db, "messages")
     addDoc(collectionRef, {
         value,
         owner: uid,
         photoURL,
+        roomId,
         createdAt: serverTimestamp()
     })
 };
@@ -239,15 +219,57 @@ export function useAddRoom(data, uid) {
     );
 };
 
-export const getRooms = async (uid) => {
-    const docRef = collection(db, "rooms");
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-        return docSnap.data()
-    }
-
-    if (!docSnap.exists()) {
-        console.log("No such document!");
-    };
+export function useRoomsByOwner(ownerId) {
+    return useQuery(
+        ['rooms', { ownerId }],
+        createQuery(() =>
+            query(
+                collection(db, "rooms"),
+                where("admin", "==", ownerId),
+                orderBy('createdAt'),
+            )
+        ),
+        {
+            enabled: !!ownerId,
+        }
+    );
 };
+
+export function useRoomByParticipant(roomId, ownerId) {
+    return useQuery(
+        ['rooms', { ownerId, roomId }],
+        createQuery(() =>
+            query(
+                doc(db, "rooms", roomId),
+                // where("participants", "array-contains", ownerId)
+            )
+        ),
+        {
+            enabled: !!ownerId,
+        }
+    );
+};
+
+export function useMessagesByRoom(roomId, ownerId) {
+    return useQuery(
+        ['messages', { roomId, ownerId }],
+        createQuery(() =>
+            query(
+                collection(db, "messages"),
+                where("roomId", "==", roomId),
+                orderBy('createdAt'),
+            )
+        ),
+        {
+            enabled: !!ownerId,
+        }
+    );
+};
+
+export const useRooms = (uid) => {
+    return useQuery(['rooms', { uid }], () => getRooms(uid), {
+        enabled: !!uid
+    });
+}
+
+// ['PhxZjvaiY2hqCRARifW3SE5is1M2', 'K5KBirPuJMyXrBPFJtku', '1x07c2J2RROimbIHUVKErdEoNoj2',]

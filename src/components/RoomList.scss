@@ -1,0 +1,36 @@
+.roomlist-ctn {
+    display: flex;
+    flex-direction: column;
+    margin: 0 2em;
+    padding: .5em 2em;
+    border: 1px solid grey;
+    border-radius: 16px;
+    gap: .5em;
+    width: 20vw;
+    align-items: center;
+}
+
+.room-ctn {
+    display: flex;
+    width: 100%;
+    background-color: hsl(0, 0%, 7%);
+    border-radius: 16px;
+    padding: 1em;
+    justify-content: space-between;
+
+    &:hover {
+        background-color: hsl(0, 0%, 22%);
+        transition: 250ms all ease-in-out;
+        cursor: pointer;
+    }
+
+    .room_tools-ctn {
+        display: flex;
+        gap: .5em;
+
+        .fa-icon:hover {
+            color: rgb(20, 20, 20)
+        }
+
+    }
+}

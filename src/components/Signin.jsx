@@ -72,13 +72,18 @@ function Signin(props) {
                     <form className='signin-ctn' onSubmit={handleSubmit(onSubmit)}>
                         <label>First Name</label>
                         <input type='text' name='firstname' {...register('firstname')} />
+                        <p className='form-error'>{errors.firstname?.message}</p>
                         <label>Last Name</label>
                         <input type='text' name='lastname' {...register('lastname')} />
+                        <p className='form-error'>{errors.lastname?.message}</p>
                         <label>E-mail</label>
+                        <p className='form-error'>{errors.email?.message}</p>
                         <input type='text' name='email' {...register('email')} />
                         <label>Password</label>
+                        <p className='form-error'>{errors.password?.message}</p>
                         <input type='password' name='password' {...register('password')} />
                         <label>Confirm your password</label>
+                        <p className='form-error'>{errors.passwordConfirm?.message}</p>
                         <input type='password' name='passwordConfirm' {...register('passwordConfirm')} />
                         <button type='submit'>{loading ? <Spinner /> : 'Sign in'}</button>
                     </form>

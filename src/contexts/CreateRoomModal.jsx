@@ -4,7 +4,7 @@ export const CreateRoomContext = React.createContext()
 
 function CreateRoomModalProvider({ children }) {
 
-    const [showModal, setShowModal] = useState(true)
+    const [showModal, setShowModal] = useState(false)
 
     const values = {
         showModal, setShowModal
@@ -13,7 +13,6 @@ function CreateRoomModalProvider({ children }) {
     return (
         <CreateRoomContext.Provider value={values}>
             <div>{children}</div>
-
         </CreateRoomContext.Provider>
     )
 }

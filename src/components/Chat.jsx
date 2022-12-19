@@ -1,20 +1,24 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { auth } from '../config/firebase'
-import { addMessage, useMessagesByOwner } from '../utils/db'
+import { addMessage, useMessagesByRoom, useRoomByParticipant } from '../utils/db'
 import './Chat.scss'
 import { useForm } from 'react-hook-form'
 import ChatMessage from './ChatMessage'
 import './ChatMessage.scss'
-import { useIsMutating } from 'react-query'
+import { RoomContext } from '../contexts/RoomContext'
+import Spinner from './Spinner'
 
 function Chat() {
 
     const [user] = useAuthState(auth)
     const { register, handleSubmit, reset, formState, submittedData } = useForm()
+    const { roomId } = useContext(RoomContext)
 
-    const { data, isLoading, Error } = useMessagesByOwner()
+    const { data, isLoading, Error } = useMessagesByRoom(roomId, user.uid)
     const scrollRef = useRef()
+
+    console.log(data)
 
     useEffect(() => {
         if (data && data.length > 0 && !isLoading) {
@@ -22,10 +26,16 @@ function Chat() {
         }
     })
 
+    const {
+        data: roomData,
+        isLoading: isRoomLoading,
+        error: roomError
+    } = useRoomByParticipant(roomId, user.uid)
+
 
     const onSubmit = (d) => {
         const { uid, photoURL } = user
-        addMessage(d.chatInput, uid, photoURL)
+        addMessage(d.chatInput, roomId, uid, photoURL)
     }
 
     React.useEffect(() => {
@@ -56,6 +66,10 @@ function Chat() {
 
     return (
         <div className='chat-ctn'>
+            {roomData && !isRoomLoading
+                ? <h3 className='roomName'>{roomData.roomName}</h3>
+                : <Spinner />
+            }
             {data
                 ? <>
                     <div className='messages-ctn'>

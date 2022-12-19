@@ -9,28 +9,27 @@ import NavBar from './components/NavBar'
 import Modal from './components/Modal'
 import CreateRoomModalProvider from './contexts/CreateRoomModal'
 import ModalWrapper from './pages/ModalWrapper'
+import RoomContextProvider, { RoomContext } from './contexts/RoomContext'
 
 function App() {
-  const [count, setCount] = useState(0)
-
-
-
 
   return (
     <div className="App">
       <QueryClientProvider>
-        <CreateRoomModalProvider>
-          <ModalWrapper />
-          <Router >
-            <NavBar />
-            <Routes>
-              <Route path='/' element={<HomePage />} />
-              <Route path='/room/:roomid' element={<HomePage />} />
-              <Route path='/signup' element={<SignUpPage />} />
-              <Route path='/login' element={<LoginPage />} />
-            </Routes>
-          </Router>
-        </CreateRoomModalProvider>
+        <RoomContextProvider>
+          <CreateRoomModalProvider>
+            <ModalWrapper />
+            <Router >
+              <NavBar />
+              <Routes>
+                <Route path='/' element={<HomePage />} />
+                <Route path='/room/:roomid' element={<HomePage />} />
+                <Route path='/signup' element={<SignUpPage />} />
+                <Route path='/login' element={<LoginPage />} />
+              </Routes>
+            </Router>
+          </CreateRoomModalProvider>
+        </RoomContextProvider>
       </QueryClientProvider>
     </div>
   )
