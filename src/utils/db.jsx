@@ -235,17 +235,31 @@ export function useRoomsByOwner(ownerId) {
     );
 };
 
-export function useRoomByParticipant(roomId, ownerId) {
+export function useRoomsByParticipant(roomId, uid) {
     return useQuery(
-        ['rooms', { ownerId, roomId }],
+        ['rooms', { uid, roomId }],
         createQuery(() =>
             query(
-                doc(db, "rooms", roomId),
-                // where("participants", "array-contains", ownerId)
+                collection(db, "rooms"),
+                where("participants", "array-contains", uid)
             )
         ),
         {
-            enabled: !!ownerId,
+            enabled: !!uid,
+        }
+    );
+};
+
+export function useRoomByParticipant(roomId, uid) {
+    return useQuery(
+        ['room', { uid, roomId }],
+        createQuery(() =>
+            query(
+                doc(db, "rooms", roomId),
+            )
+        ),
+        {
+            enabled: !!uid,
         }
     );
 };

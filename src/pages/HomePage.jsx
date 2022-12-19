@@ -14,13 +14,16 @@ import { useRoomsByOwner } from '../utils/db'
 function HomePage() {
 
     const [user] = useAuthState(auth)
-    const { data: rooms, isLoading: isRoomsLoading, error: roomsError } = useRoomsByOwner(user?.uid)
+    const { data: userRooms, isLoading: isUserRoomsLoading, error: userRoomsError } = useRoomsByOwner(user?.uid)
+    const { data: participantRooms, isLoading: isParticipantRoomsLoading, error: participantRoomsError } = useRoomsByOwner(user?.uid)
 
+    console.log(participantRooms ? participantRooms : '')
 
     return (
         <div className='homepage-ctn' style={{ display: 'flex', justifyContent: 'center' }}>
-            {rooms && !isRoomsLoading
-                ? <RoomList rooms={rooms} />
+            {userRooms && !isUserRoomsLoading &&
+                participantRooms && !isParticipantRoomsLoading
+                ? <RoomList rooms={[...userRooms, participantRooms]} />
                 : <Spinner />
             }
             {user

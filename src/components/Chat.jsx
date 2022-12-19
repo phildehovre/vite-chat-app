@@ -18,8 +18,6 @@ function Chat() {
     const { data, isLoading, Error } = useMessagesByRoom(roomId, user.uid)
     const scrollRef = useRef()
 
-    console.log(data)
-
     useEffect(() => {
         if (data && data.length > 0 && !isLoading) {
             scrollRef.current.scrollIntoView({ behaviour: 'smooth' })
@@ -60,7 +58,7 @@ function Chat() {
             )
         }
         return (
-            <p>Start the conversation!</p>
+            <h4>Start the conversation!</h4>
         )
     }
 
