@@ -221,7 +221,7 @@ export function useAddRoom(data, uid) {
 
 export function useRoomsByOwner(ownerId) {
     return useQuery(
-        ['rooms', { ownerId }],
+        ['adminRooms', { ownerId }],
         createQuery(() =>
             query(
                 collection(db, "rooms"),
@@ -235,9 +235,9 @@ export function useRoomsByOwner(ownerId) {
     );
 };
 
-export function useRoomsByParticipant(roomId, uid) {
+export function useRoomsByParticipant(uid) {
     return useQuery(
-        ['rooms', { uid, roomId }],
+        ['rooms', { uid }],
         createQuery(() =>
             query(
                 collection(db, "rooms"),

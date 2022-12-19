@@ -28,7 +28,16 @@ function Signin(props) {
     const Auth = getAuth()
 
     const signInWithGoogle = () => {
-        signInWithPopup(auth, provider);
+        signInWithPopup(auth, provider).then(({ user }) => {
+            const data = {
+                firstName: user.displayName,
+                email: user.email,
+                photoURL: user.photoURL,
+            }
+            createUser(user.uid, data).then(() => {
+                navigate('/')
+            })
+        });
     }
 
     const { handleSubmit, register, formState: { errors } } = useForm({ resolver: yupResolver(schema) })
@@ -40,7 +49,15 @@ function Signin(props) {
         if (type === 'signup') {
             createUserWithEmailAndPassword(data.email, data.password)
                 .then((userCredentials) => {
-                    createUser(userCredentials.user.uid, data).then(() => {
+                    console.log(userCredentials)
+                    const userData = {
+                        firstName: data.firstName,
+                        lastName: data.lastName,
+                        email: user.email,
+                        photoURL: user.photoURL,
+                    }
+                    createUser(userCredentials.user.uid, userData).then((res) => {
+                        console.log(res)
                         navigate('/')
                     })
                 }).catch((err) => { console.log(err) })

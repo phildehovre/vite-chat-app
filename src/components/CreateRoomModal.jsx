@@ -44,11 +44,12 @@ function CreateRoomModal(props) {
     return (
         <Modal showModal={showModal}>
             <div className='room_modal-ctn'>
-                <h3>Name your room: </h3>
+                <h2>Name your room: </h2>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <input type='text' name='roomName' {...register('roomName')} />
+                    <input type='text' autoComplete='off' name='roomName' {...register('roomName')} />
                     {errors.roomName && <p className='form-error'>{errors.roomName.message}</p>}
-                    <input type='text' name='roomDescription' {...register('roomDescription')} />
+                    <h2>Describe your room: </h2>
+                    <input type='text' name='roomDescription' autoComplete='off'{...register('roomDescription')} />
                     {errors.description && <p className='form-error'>{errors.description.message}</p>}
                     <button type='submit'>{addRoom.isLoading ? <Spinner /> : 'Create room'}</button>
                     {/* <button type='submit'>{'Create room'}</button> */}

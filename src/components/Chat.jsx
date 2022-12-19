@@ -1,21 +1,24 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { auth } from '../config/firebase'
-import { addMessage, useMessagesByRoom, useRoomByParticipant } from '../utils/db'
-import './Chat.scss'
 import { useForm } from 'react-hook-form'
-import ChatMessage from './ChatMessage'
-import './ChatMessage.scss'
+import { uuidv4 } from '@firebase/util'
+
+import { addMessage, useMessagesByRoom, useRoomByParticipant } from '../utils/db'
 import { RoomContext } from '../contexts/RoomContext'
 import Spinner from './Spinner'
+import ChatMessage from './ChatMessage'
+import './Chat.scss'
+import './ChatMessage.scss'
 
 function Chat() {
+
 
     const [user] = useAuthState(auth)
     const { register, handleSubmit, reset, formState, submittedData } = useForm()
     const { roomId } = useContext(RoomContext)
 
-    const { data, isLoading, Error } = useMessagesByRoom(roomId, user.uid)
+    const { data, isLoading, error } = useMessagesByRoom(roomId, user.uid)
     const scrollRef = useRef()
 
     useEffect(() => {
@@ -48,7 +51,7 @@ function Chat() {
             return data.map((msg, i) => {
                 return (
                     <>
-                        <ChatMessage key={i} msg={msg} />
+                        <ChatMessage key={uuidv4()} msg={msg} />
                         {data.length - 1 === i &&
                             <div ref={scrollRef}></div>
                         }
@@ -74,7 +77,7 @@ function Chat() {
                         {renderChatbox()}
                     </div>
                     <form className='chat-input' onSubmit={handleSubmit(onSubmit)}>
-                        <input {...register("chatInput")} type='text' />
+                        <input autoComplete='off' {...register("chatInput")} type='text' />
                         <button
                         >Send</button>
                         <div></div>

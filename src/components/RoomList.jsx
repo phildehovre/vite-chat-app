@@ -16,6 +16,7 @@ function RoomList(props) {
 
     const handleRoomSelection = (id) => {
         setRoomId(id)
+        console.log(id)
     }
 
     const renderRooms = () => {
