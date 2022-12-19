@@ -3,16 +3,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useContext, useEffect, useState } from 'react'
 import { RoomContext } from '../contexts/RoomContext'
 import './RoomList.scss'
+import RoomListItem from './RoomListItem'
 
 function RoomList(props) {
 
     const { rooms } = props
     const { setRoomId } = useContext(RoomContext)
-    const [isHovered, setIsHOvered] = useState(false)
 
-    const handleHover = (i) => {
-        setIsHOvered(i)
-    }
 
     const handleRoomSelection = (id) => {
         setRoomId(id)
@@ -22,20 +19,11 @@ function RoomList(props) {
     const renderRooms = () => {
         return rooms.map((room, i) => {
             return (
-                <div key={i}
-                    onClick={() => handleRoomSelection(room.id)}
-                    onMouseEnter={() => handleHover(i)}
-                    onMouseLeave={() => handleHover()}
-                    className='room-ctn'
-                >{room.roomName}
-                    {
-                        isHovered === i &&
-                        <div className='room_tools-ctn'>
-                            <FontAwesomeIcon className='fa-icon' icon={faCog} />
-                            <FontAwesomeIcon className='fa-icon' icon={faTrash} />
-                        </div>
-                    }
-                </div>
+                <RoomListItem
+                    room={room}
+                    key={i}
+                    index={i}
+                />
             )
         })
     }

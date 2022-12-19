@@ -10,6 +10,7 @@ import Modal from './components/Modal'
 import CreateRoomModalProvider from './contexts/CreateRoomModal'
 import ModalWrapper from './pages/ModalWrapper'
 import RoomContextProvider, { RoomContext } from './contexts/RoomContext'
+import RoomSettingsPage from './pages/RoomSettingsPage'
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
                 <Route path='/room/:roomid' element={<HomePage />} />
                 <Route path='/signup' element={<SignUpPage />} />
                 <Route path='/login' element={<LoginPage />} />
+                <Route path='/roomsettings/:roomid' element={<RoomSettingsPage />} />
               </Routes>
             </Router>
           </CreateRoomModalProvider>
