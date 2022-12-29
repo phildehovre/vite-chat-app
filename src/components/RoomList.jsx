@@ -13,7 +13,6 @@ function RoomList(props) {
 
     const handleRoomSelection = (id) => {
         setRoomId(id)
-        console.log(id)
     }
 
     const renderRooms = () => {
@@ -23,6 +22,7 @@ function RoomList(props) {
                     room={room}
                     key={i}
                     index={i}
+                    handleRoomSelection={handleRoomSelection}
                 />
             )
         })

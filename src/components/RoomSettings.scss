@@ -1,0 +1,28 @@
+.room_settings-ctn {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2em;
+}
+
+.settings_form-ctn {
+    position: relative;
+    padding: 2em;
+    display: flex;
+    flex-direction: column;
+    border-radius: 16px;
+    border: 1px solid grey;
+    gap: 1em;
+
+    .settings_section-label {
+        position: absolute;
+        background-color: #242424;
+        top: -30px;
+        left: 1em;
+        padding: 0 1em 0 0.25em;
+
+    }
+
+    input {
+        padding: 1em
+    }
+}

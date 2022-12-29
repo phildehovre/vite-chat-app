@@ -130,27 +130,7 @@ export function QueryClientProvider(props) {
 }
 
 
-export const useNews = (q, size, onSuccess, onError) => {
-    return useQuery(['news', { q, size }], () => fetchNews(q, size), {
-        onSuccess,
-        onError,
-        refetchOnWindowFocus: false,
-        refetchOnMount: true,
-        refetch: false
-    });
-}
 
-export const updateWatchlist = async (uid, ticker) => {
-    const docRef = doc(db, "watchlists", uid)
-    const docSnap = await getDoc(docRef)
-    if (!ticker) return;
-
-    if (docSnap.exists()) {
-        updateDoc(docRef, { watchlist: arrayUnion({ ...ticker, 'owner': uid }) })
-    } else {
-        setDoc(docRef, { 'watchlist': ticker })
-    };
-};
 export const addMessage = async (value, roomId, uid, photoURL) => {
     const collectionRef = collection(db, "messages")
     addDoc(collectionRef, {
@@ -185,23 +165,25 @@ export const deleteRoom = async (roomId, uid) => {
     }
 }
 
-export const updateRoom = async (roomId, uid) => {
+export const updateRoom = async (roomId, data) => {
     const docRef = doc(db, "rooms", roomId)
     const docSnap = await getDoc(docRef)
 
     if (docSnap.exists()) {
-        updateDoc(docRef, data)
+        const dataObject = Object.keys(data).reduce((acc, key) => {
+            acc[key] = data[key]
+            return acc
+        }, {})
+        updateDoc(docRef, dataObject)
     } else {
         setDoc(docRef, data)
     };
 };
+
 export const addRoom = async (data, uid) => {
     const collectionRef = collection(db, "rooms")
-    const { roomName, roomDescription } = data
     addDoc(collectionRef, {
-        roomName, roomDescription,
-        admin: uid,
-        createdAt: serverTimestamp()
+        ...data, createdAt: serverTimestamp(), admin: uid
     })
 };
 
@@ -259,7 +241,7 @@ export function useRoomByParticipant(roomId, uid) {
             )
         ),
         {
-            enabled: !!uid,
+            // enabled: !!uid,
         }
     );
 };

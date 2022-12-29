@@ -11,12 +11,12 @@ import ChatMessage from './ChatMessage'
 import './Chat.scss'
 import './ChatMessage.scss'
 
-function Chat() {
+function Chat({ roomId }) {
+
 
 
     const [user] = useAuthState(auth)
     const { register, handleSubmit, reset, formState, submittedData } = useForm()
-    const { roomId } = useContext(RoomContext)
 
     const { data, isLoading, error } = useMessagesByRoom(roomId, user.uid)
     const scrollRef = useRef()
